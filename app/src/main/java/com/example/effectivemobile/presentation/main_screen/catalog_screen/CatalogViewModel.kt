@@ -1,12 +1,15 @@
 package com.example.effectivemobile.presentation.main_screen.catalog_screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.effectivemobile.domain.model.ProductDomain
 import com.example.effectivemobile.domain.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,7 +22,12 @@ class CatalogViewModel @Inject constructor(
     private val allTags = mutableListOf<Tags>()
     private val allSortingOptions = mutableListOf<Sort>()
     private val _uiState = MutableStateFlow(UIState(isLoading = true))
-    val uiState = _uiState.asStateFlow()
+    val uiState =
+        _uiState.stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            UIState()
+        )
 
     init {
         viewModelScope.launch {

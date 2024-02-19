@@ -39,9 +39,9 @@ import com.example.effectivemobile.presentation.components.ProductItem
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CatalogScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: CatalogViewModel = hiltViewModel()
 ) {
-    val viewModel: CatalogViewModel = hiltViewModel()
     val state = viewModel.uiState.collectAsState()
     var currentSortOption by remember { mutableStateOf(Sort.BY_RATING) }
     var selectedTag by remember { mutableStateOf(Tags.ALL) }
